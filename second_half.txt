@@ -1,0 +1,338 @@
+passive-interface Command
+
+
+Interior Gateway Protocols (IGP)
+
+
+
+
+RIP Overview
+Advertise Default Routes Using RIP
+Configuring RIPv2
+EIGRP Overview
+EIGRP Diffusing Update Algorithm (DUAL)
+EIGRP Reliable Transport Protocol (RTP)
+Wildcard Masks
+Wildcard Mask in EIGRP
+EIGRP Automatic & Manual Summarization
+EIGRP Summary
+
+
+Open Shortest Path First (OSPF)
+
+
+
+
+OSPF Overview
+Differences Between OSPF and EIGRP
+Cisco Bandwidth Command vs Clock Rate and Speed Commands
+OSPF Cost - OSPF Routing Protocol Metric Explained
+OSPF Configuration
+Designated & Backup Designated Router
+OSPF Passive Interface - Configuration and Why it is Used
+OSPF Default-Information Originate and the Default Route
+OSPF Load Balancing - Explanation and Configuration
+OSPF Summarization
+Troubleshooting OSPF and OSPF Configuration Verification
+OSPF Network Types - Point-to-Point and Broadcast
+OSPF Summary
+
+
+Virtual Local Area Network (VLAN)
+
+
+
+
+Cisco Three-Layer Hierarchical Model
+Collapsed Core and Three-Tier Network Architectures
+What is Spine and Leaf Network Architecture?
+What is a VLAN?
+Frame Tagging
+Configuring VLANs
+Access and Trunk Ports
+Inter-Switch Link (ISL)
+IEEE 802.1Q
+Configuring Access & Trunk Ports
+Configuring Voice VLANs
+Configuring Allowed VLANs
+Cisco Dynamic Trunking Protocol (DTP) Explained
+What is VTP?
+VTP Modes
+VTP Configuration
+
+
+Inter-VLAN Routing
+
+
+
+
+Configure interVLAN Routing
+Configure Cisco ROAS Router On A Stick
+Cisco Layer 3 Switch InterVLAN Routing Configuration
+
+
+Dynamic Host Configuration Protocol (DHCP)
+
+
+
+
+DHCP & DNS
+Configure Cisco Router as DHCP Server
+DHCP Relay Agent
+Configure Cisco Router as a DHCP Client
+APIPA (Automatic Private IP Addressing)
+
+
+Hot Standby Routing Protocol (HSRP)
+
+
+
+
+What is Network Redundancy and What are its Benefits?
+Cisco First Hop Redundancy Protocol (FHRP) Explained
+Cisco Hot Standby Router Protocol (HSRP) Explained
+Cisco Hot Standby Router Protocol (HSRP) Configuration
+Cisco Hot Standby Router Protocol (HSRP) Preempt Command
+
+
+Spanning Tree Protocol (STP)
+
+
+
+
+What is STP?
+Network Bridge Explained
+How STP Works
+Electing the Root Switch in STP
+Spanning Tree Priority: Root Primary and Root Secondary
+Selecting STP Root Port
+Selecting STP Designated Port (DP)
+Spanning Tree Modes: MSTP, PVST+, and RPVST+
+What is RSTP?
+How RSTP Works
+Configuring RSTP
+Cisco HSRP and Spanning Tree Alignment Configuration
+Spanning Tree Portfast, BPDU Guard, Root Guard Configuration
+
+
+EtherChannel
+
+
+
+
+What is EtherChannel and Why Do We Need It?
+EtherChannel Port Aggregation Protocol (PAgP)
+EtherChannel Link Aggregation Control Protocol (LACP)
+Multichassis EtherChannel (MEC) and MEC Options
+Cisco Layer 3 EtherChannel - Explanation and Configuration
+
+
+Switch Security
+
+
+
+
+What is DCHP Snooping? - Explanation and Configuration
+Dynamic ARP Inspection (DAI) Explanation & Configuration
+What is 802.1X Authentication and How it Works?
+Port Security
+Cisco Port Security Violation Modes Configuration
+
+
+Access Control List (ACL)
+
+
+
+
+What are ACLs?
+Types of ACLs
+Configuring Standard ACLs
+Configuring Extended ACLs
+Configuring Named ACLs
+
+
+Network Address Translation (NAT)
+
+
+
+
+What is NAT?
+Static NAT
+Dynamic NAT
+Port Address Translation (PAT) Configuration
+
+
+IPv6 Addressing and Routing
+
+
+
+
+What is IPv6?
+IPv6 Address Format
+IPv6 Interface Identifier
+Differences Between IPv4 and IPv6
+Types of IPv6 Addresses
+How to Configure IPv6
+IPv6 SLAAC - Stateless Address Autoconfiguration
+IPv6 Routing - Static Routes Explained and Configured
+IPv6 Default Static Route and Summary Route
+IPv6 Routing Protocols
+Neighbor Discovery Protocol - NDP Overview
+
+
+Wide Area Networks (WAN)
+
+
+
+
+Wide Area Network
+Cisco VPN - What is VPN (Virtual Private Network)?
+WAN Connection Types - Explanation and Examples
+Leased Line Definition, Explanation, and Example
+Multiprotocol Label Switching (MPLS) Explained & Configured
+What is PPPoE? Point to Point Protocol over Ethernet
+The Different Wide Area Network (WAN) Topologies
+
+
+Security Concepts
+
+
+
+
+Cybersecurity Threats and Common Attacks Explained
+The Different Types of Firewalls Explained
+Firewalls, IDS, and IPS Explanation and Comparison
+Cisco Cryptography: Symmetric vs Asymmetric Encryption
+HTTP and HTTPS explained
+Cyber Threats Attack Mitigation and Prevention
+
+
+Network Device Security
+
+
+
+
+Telnet & SSH
+Setting Up Telnet
+Setting Up SSH
+Cisco Console Port Security
+exec-timeout Command
+Encrypt Local Usernames and Passwords
+Cisco Privilege Levels - Explanation and Configuration
+What is AAA? Authentication, Authorization, & Accounting
+Configuring AAA on Cisco Devices – RADIUS and TACACS+
+Configuring a Cisco Banner: MOTD, Login, & Exec Banners
+Configure Timezone and Daylight Saving Time (DST)
+NTP (Network Time Protocol)
+Configure NTP on a Cisco Router
+
+
+Network Device Management
+
+
+
+
+Syslog Explained
+Syslog Message Format
+Cisco IOS Syslog Logging Locations
+logging synchronous Command
+debug Command
+terminal monitor Command
+SNMP (Simple Network Management Protocol)
+SNMPv3 Overview and Configuration
+
+
+Quality of Service (QoS)
+
+
+
+
+Quality of Service (QoS) and its Effect on the Network
+Quality of Service (QoS) Classification and Marking
+Quality of Service (QoS) Queues and Queuing Explained
+Quality of Service (QoS) Traffic Shaping and Policing
+Quality of Service (QoS) Network Congestion Management
+
+
+Cloud Computing
+
+
+
+
+Cloud Computing - Definition, Characteristics, & Importance
+What is Server Virtualization, its Importance, and Benefits?
+Network Virtualization and Virtualizing Network Devices
+Cloud Computing Service Models - IaaS, PaaS, SaaS
+Cloud Deployment Models - Explanation and Comparison
+The Different WAN to Cloud Connectivity Options
+The Advantages and Disadvantages of Cloud Computing
+
+
+Wireless Networks
+
+
+
+
+What is Wireless Network and What are its Types?
+Wireless Access Point Operation Explained
+Autonomous AP Access Point Configuration
+Lightweight Access Point (AP) Configuration
+Cisco Wireless Architectures Overview and Examples
+Cisco Wireless LAN Controller Deployment Models
+2.4 GHz vs 5 GHz WiFi Frequency Spectrum
+Understanding WiFi Security - WEP, WPA, WPA2, and WPA3
+
+
+Network Automation and Programmability
+
+
+
+
+What is Network Automation and Why We Need It?
+Network Programmability - Git, GitHub, CI/CD, and Python
+Data Serialization Formats - JSON, YAML, and XML
+SOAP vs REST: Comparing the Web API Services
+Model-Driven Programmability: NETCONF and RESTCONF
+Configuration Management Tools - Ansible, Chef, & Puppet
+Cisco SDN - Software Defined Networking Explained
+Cisco DNA - Digital Network Architecture Overview
+Cisco IBN - Intent-Based Networking Explained
+Cisco SD-Access (Software-Defined Access) Overview
+Cisco SD-WAN (Software-Defined WAN) Overview & Architecture
+
+
+
+
+CCNP ENCOR 350-401 Tutorials
+
+
+
+
+Click here for CCNP tutorials on study-ccnp.com
+
+
+Recommended CCNA Training Course:AlphaPrep Practice Tests Free Trial:Free CCNA Study Guide PDF: 
+
+
+About
+Contact
+Privacy Policy
+ 
+Copyright study-ccna.com 2023. All rights reserved. This is not an official Cisco website. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
