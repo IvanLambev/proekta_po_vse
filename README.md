@@ -1,6 +1,6 @@
 # Web Scraper
 
-![loading](https://github.com/IvanLambev/proekta_po_vse/static/images/ss_proekta_po_vse.png)
+![loading](https://github.com/IvanLambev/proekta_po_vse/blob/main/static/images/ss_proekta_po_vse.png)
 
 This is a simple web scraper that scrapes any url you give it and returns the text of the page.
 
