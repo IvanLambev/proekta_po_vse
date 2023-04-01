@@ -87,7 +87,14 @@ if __name__ == "__main__":
     if mode == "1":
         print("Starting scrape...")
 
-        num_urls = int(input("How many urls would you like to scrape? "))
+        num_urls = int(input("How many urls would you like to scrape max = 10? "))
+        if num_urls > 10:
+            print("Too many urls")
+            print("Exiting...")
+            exit()
+        else:
+            pass
+        
         urls = []
         for i in range(num_urls):
             if num_urls == 1:
