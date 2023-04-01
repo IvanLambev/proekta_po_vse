@@ -2,7 +2,9 @@ import openai
 import argparse
 
 # Set up OpenAI API credentials
-openai.api_key = "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"
+with open('api_key.txt', 'r') as f:
+    openai.api_key = f.read()
+
 
 # Define function to summarize text using OpenAI API
 def summarize_text(text):
