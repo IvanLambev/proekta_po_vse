@@ -3,6 +3,7 @@ import bs4
 import requests
 import psutil
 import os
+import translate
 #import summary
 
 
@@ -29,11 +30,11 @@ def split_file(file_path):
     second_half = contents[split_index:]
 
     # Write the first half to a new file
-    with open('first_half.txt', 'w') as f:
+    with open('/output_files/first_half.txt', 'w') as f:
         f.writelines(first_half)
 
     # Write the second half to a new file
-    with open('second_half.txt', 'w') as f:
+    with open('/output_files/second_half.txt', 'w') as f:
         f.writelines(second_half)
 
 
@@ -94,7 +95,7 @@ if __name__ == "__main__":
             exit()
         else:
             pass
-        
+
         urls = []
         for i in range(num_urls):
             if num_urls == 1:
@@ -118,7 +119,7 @@ if __name__ == "__main__":
 
         use_default = input("Use default file name? (y/n): ")
         if use_default == "y":
-            file_path = "result.txt"
+            file_path = "output_files/output.txt"
         else:
             file_path = input("Enter file name: ")
 
@@ -145,6 +146,26 @@ if __name__ == "__main__":
                         f.write(text)
 
                     print('Done scraping ' + url)
+
+                    input = input("Do you want to translate the text? (y/n): ")
+                    if input == "y":
+                        translate_to = __builtins__.input("Enter language to translate to (en)(fr)(de)(it)(ru): ")
+
+                        translated_text = translate.translate_text(text, str(translate_to))
+
+                        print("Translation complete.")
+                        path_to_save = __builtins__.input("Enter path to save translation (if you want to use the default path type 1): ")
+                        if path_to_save == "1":
+                            path_to_save = "output_files/translation.txt"
+                        else:
+                            pass
+
+
+                        with open(path_to_save, 'w') as f:
+                            f.write(translated_text)
+
+
+
             except FileNotFoundError:
                 print("File not found")
                 print("Exiting...")
@@ -155,7 +176,7 @@ if __name__ == "__main__":
 
         path = input("Enter file path for default use DEFAULT: ")
         if path == "DEFAULT":
-            path = "result.txt"
+            path = "output_files/result.txt"
 
         else :
             pass
