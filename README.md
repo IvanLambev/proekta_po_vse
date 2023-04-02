@@ -21,4 +21,6 @@ python scraper.py
 ```python scraper.py
 Enter url: http://www.google.com
 ```
-
+#### NOTE: The scraper will only work on websites that allow scraping. If you try to scrape a website that does not allow scraping, you will get an error.
+The translator is not perfect, but it is good enough to get the general idea of the text. It is also not perfect for all languages, but it is good enough for most languages.
+If you want to use the translator, you will need to get a free API key from [Yandex](https://translate.yandex.com/developers/keys) and paste it in the translator.py file.
