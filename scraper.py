@@ -1,10 +1,9 @@
-import requests
 import bs4
 import requests
 import psutil
 import os
-import translate
-#import summary
+
+import summary
 
 
 def get_text(url):
@@ -19,24 +18,6 @@ def get_text(url):
 
     return text
 
-def split_file(file_path):
-    # Read the contents of the file
-    with open(file_path, 'r') as f:
-        contents = f.readlines()
-
-    # Split the contents in half
-    split_index = len(contents) // 2
-    first_half = contents[:split_index]
-    second_half = contents[split_index:]
-
-    # Write the first half to a new file
-    with open('/output_files/first_half.txt', 'w') as f:
-        f.writelines(first_half)
-
-    # Write the second half to a new file
-    with open('/output_files/second_half.txt', 'w') as f:
-        f.writelines(second_half)
-
 
 def is_valid_url(url):
     try:
@@ -44,6 +25,14 @@ def is_valid_url(url):
         return response.status_code == 200
     except:
         return False
+
+
+def is_valid_path(path):
+    if os.path.exists(path):
+        return True
+    else:
+        return False
+
 
 def has_ethernet_access():
     interfaces = psutil.net_if_stats()
@@ -56,9 +45,74 @@ def has_ethernet_access():
     return False
 
 
+def scrape_and_output_to_file(url_count, url, file_path, file_name):
+    url_count = int(url_count)  # convert to int
+    print(url_count)
+    default_file_path = os.path.join(os.getcwd() , "output_files")
+    print(default_file_path)
+    default_file_name = "file_"
+
+    if file_path == "":
+        file_path = default_file_path
+    else:
+        pass
+
+    if file_name == "":
+        file_name = default_file_name
+    else:
+        pass
+
+    for i in range(url_count):
+        if is_valid_url(url[i]):
+            text = get_text(url[i])
+            scraped_file_name = file_name + str(i) + ".txt"
+            file_pathname = os.path.join(file_path, scraped_file_name)
+            print(file_pathname+"\n")
+            #
+            with open(file_pathname, "w") as f:
+                f.write(str(text.encode("utf-8")))
+            print("File saved to: " + file_pathname)
+            print("")
+        else:
+            print("Invalid URL")
+            print("Skipping...")
+            pass
+
+
+def summarize(path_to_file, summary_file_name, summary_file_path):
+    if is_valid_path(path_to_file):
+        with open(path_to_file, "r") as f:
+            text_to_summarize = f.read()
+            summarized_text = summary.summarize_text(text_to_summarize)
+            default_file_path = "./output_files"
+            default_file_name = "file_summarized"
+
+            if summary_file_path == "":
+                summary_file_path = default_file_path
+            else:
+                pass
+
+            if summary_file_name == "":
+                summary_file_name = default_file_name
+            else:
+                pass
+
+            file_name = summary_file_name + ".txt"
+            file_pathname = os.path.join(summary_file_path, summary_file_name)
+
+            with open(file_pathname, "w") as f:
+
+                f.write(str(summarized_text.encode("utf-8")))
+    else:
+        return "Invalid path to file"
+
+
 if __name__ == "__main__":
 
-#welcome message "scraper"
+    if not os.path.exists("output_files"):
+        os.mkdir("output_files")
+
+    # welcome message "scraper"
     print('''
 
  __          __  _        _____                                      
@@ -72,7 +126,7 @@ if __name__ == "__main__":
 
     ''')
 
-    print ('Starting web scraper...')
+    print('Starting web scraper...')
     print("Welcome to the web scraper")
 
     if has_ethernet_access() == False:
@@ -82,249 +136,26 @@ if __name__ == "__main__":
     else:
         pass
 
-    print("Please enter mode \n 1 - scrape \n 2 - summarize \n 3 - scrape and summarize \n 4 - help \n 5 - exit")
+    print("Please enter mode \n 1 - scrape and output to a file  \n 2 - scrape and summarize \n 3 - exit")
     mode = input("Enter mode: ")
 
     if mode == "1":
-        print("Starting scrape...")
 
-        num_urls = int(input("How many urls would you like to scrape max = 10? "))
-        if num_urls > 10:
-            print("Too many urls")
-            print("Exiting...")
-            exit()
-        else:
-            pass
+        url_count = int(input("Enter number of urls to scrape: "))
+        url = []
+        for i in range(url_count):
+            url_input = input("Enter url: ")
+            url.append(url_input)
+        print(url[i])
+        file_path = input("Enter file path: ")
+        file_name = input("Enter file name: ")
 
-        urls = []
-        for i in range(num_urls):
-            if num_urls == 1:
-
-                urls.append(input("Enter url: "))
-
-                if urls[i] == "":
-                    print("No url entered")
-                    print("Exiting...")
-                    exit()
-
-                if is_valid_url(urls[i]) == False:
-                    print("Invalid url")
-                    print("Exiting...")
-                    exit()
-                else:
-                    pass
-
-            else:
-                urls.append(input("Enter url number " + str(i + 1)  +" : "))
-
-        use_default = input("Use default file name? (y/n): ")
-        if use_default == "y":
-            file_path = "output_files/output.txt"
-        else:
-            file_path = input("Enter file name: ")
-
-        for url in urls:
-            print('Scraping website...')
-            # Get the text from the website
-            text = get_text(url)
-            print('Scraping complete. Saving to file...')
-            # Write the text to the output file
-            try:
-                # Split the file path into directory and file name
-                dir_path, file_name_with_ext = os.path.split(file_path)
-                file_name, file_ext = os.path.splitext(file_name_with_ext)
-
-                for n in range(num_urls):
-                    # Add the index and file extension to the file name
-                    indexed_file_name = f"{file_name}_{n}{file_ext}"
-
-                    # Join the directory and indexed file name to create the full file path
-                    indexed_file_path = os.path.join(dir_path, indexed_file_name)
-
-                    # Open the file and write the text
-                    with open(indexed_file_path, 'w') as f:
-                        f.write(text)
-
-                    print('Done scraping ' + url)
-
-                    input = input("Do you want to translate the text? (y/n): ")
-                    if input == "y":
-                        translate_to = __builtins__.input("Enter language to translate to (en)(fr)(de)(it)(ru): ")
-
-                        translated_text = translate.translate_text(text, str(translate_to))
-
-                        print("Translation complete.")
-                        path_to_save = __builtins__.input("Enter path to save translation (if you want to use the default path type 1): ")
-                        if path_to_save == "1":
-                            path_to_save = "output_files/translation.txt"
-                        else:
-                            pass
-
-
-                        with open(path_to_save, 'w') as f:
-                            f.write(translated_text)
-
-
-
-            except FileNotFoundError:
-                print("File not found")
-                print("Exiting...")
-                exit()
-
+        scrape_and_output_to_file(url_count, url, file_path, file_name)
 
     elif mode == "2":
 
-        path = input("Enter file path for default use DEFAULT: ")
-        if path == "DEFAULT":
-            path = "output_files/result.txt"
-
-        else :
-            pass
-
-        print("Starting summarize...")
-        try :
-            with open(path, "r") as file:
-                content = file.read()
-                word_count = len(content.split())
-
-        except FileNotFoundError:
-            print("File not found")
-            if word_count < 1200:
-                print("The file contains {} words.".format(word_count))
-                print('Summarizing...')
-                #print(summary.summarize_text(text))
-            else:
-                print("The file contains {} words.".format(word_count))
-                print('The file is too long to summarize.')
-                answer = input('Would you like to split the file? (y/n): ')
-                if answer == 'y':
-                    print('Spliting file...')
-                    split_file('result.txt')
-                    print('Done splitting!')
-
-                    with open("first_half.txt", "r") as file:
-                        content = file.read()
-                        text = content
-                        word_count = len(content.split())
-                        if word_count > 1200:
-                            split_file('first_half.txt')
-                            print("The file contains {} words.".format(word_count))
-                            print('Can not summarize...')
-                            pass
-                        else:
-                            print("The file contains {} words.".format(word_count))
-                            print('Summarizing...')
-                            #print(summary.summarize_text(text))
-                    with open("second_half.txt", "r") as file:
-                        content = file.read()
-                        word_count = len(content.split())
-                        text = content
-                        if word_count > 1200:
-                            split_file('second_half.txt')
-                            print("The file contains {} words.".format(word_count))
-                            print('Can not summarize...')
-                            pass
-                        else:
-                            print("The file contains {} words.".format(word_count))
-                            print('Summarizing...')
-                            #print(summary.summarize_text(text))
-                else:
-                    print('Exiting...')
-                    exit()
-
-
-    elif mode == "3":
-        print("Starting scrape and summarize...")
-        num_urls = int(input("How many urls would you like to scrape? "))
-        urls = []
-        for i in range(num_urls):
-            urls.append(input("Enter url: "))
-
-        for url in urls:
-            print('Scraping website...')
-            # Get the text from the website
-            text = get_text(url)
-            print('Scraping complete. Saving to file...')
-            # Write the text to the output file
-            with open('result.txt', 'w') as f:
-                f.write(text)
-            print('Done scraping ' + url)
-        with open("result.txt", "r") as file:
-            content = file.read()
-            word_count = len(content.split())
-            if word_count < 1200:
-                print("The file contains {} words.".format(word_count))
-                print('Summarizing...')
-                #print(summary.summarize_text(text))
-            else:
-                print("The file contains {} words.".format(word_count))
-                print('The file is too long to summarize.')
-                answer = input('Would you like to split the file? (y/n): ')
-                if answer == 'y':
-                    print('Spliting file...')
-                    split_file('result.txt')
-                    print('Done splitting!')
-
-                    with open("first_half.txt", "r") as file:
-                        content = file.read()
-                        text = content
-                        word_count = len(content.split())
-                        if word_count > 1200:
-                            split_file('first_half.txt')
-                            print("The file contains {} words.".format(word_count))
-                            print('Can not summarize...')
-                            pass
-                        else:
-                            print("The file contains {} words.".format(word_count))
-                            print('Summarizing...')
-                            #print(summary.summarize_text(text))
-                    with open("second_half.txt", "r") as file:
-                        content = file.read()
-                        word_count = len(content.split())
-                        text = content
-                        if word_count > 1200:
-                            split_file('second_half.txt')
-                            print("The file contains {} words.".format(word_count))
-                            print('Can not summarize...')
-                            pass
-                        else:
-                            print("The file contains {} words.".format(word_count))
-                            print('Summarizing...')
-                            #print(summary.summarize_text(text))
-                else:
-                    print('Exiting...')
-                    exit()
-    elif mode == "4":
-
-        mode = input("Enter 1 for usage manual or 2 for descryption: ")
-        if mode == "1":
-            print('''Scrape mode:
-    1. Enter the number of urls you would like to scrape.
-    2. Enter the urls you would like to scrape.
-    3. The program will scrape the urls and save the text to a file called result.txt in your direcetory.
-    4. The program will then ask if you would like to summarize the text.
-    5. If you would like to summarize the text enter y.
-    6. If you would like to exit enter n.
-    7. If the file is too long to summarize the program will ask if you would like to split the file.
-    8. If you would like to split the file enter y.
-    9. If you would like to exit enter n.
-    10. The program will then split the file into two files called first_half.txt and second_half.txt and then summarize them.
-    
-    Summarize mode:
-    1. Enter the file path for the file you would like to summarize.
-    2. The program will ask if you would like to summarize the text.
-    3. If you would like to summarize the text enter y.
-    4. If you would like to exit enter n.
-    5. If the file is too long to summarize the program will ask if you would like to split the file.
-    6. If you would like to split the file enter y.
-    7. If you would like to exit enter n.
-    
-    Scrape and summarize mode:
-    1. Enter the number of urls you would like to scrape.
-    2. Enter the urls you would like to scrape.
-    3. The program will scrape the urls and save the text to a file called result.txt in your direcetory.
-    4. The program will then ask if you would like to summarize the text.
-    5. If you would like to summarize the text enter y.
-    6. If you would like to exit enter n.
-    
-''')
+        url_count = int(input("Enter number of urls to scrape: "))
+        url = input("Enter url: ")
+        file_path = input("Enter file path: ")
+        file_name = input("Enter file name: ")
+        scrape_and_output_to_file(url_count, url, file_path, file_name)

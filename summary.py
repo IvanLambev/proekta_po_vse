@@ -1,64 +1,15 @@
-import openai
-import argparse
+import nlpcloud
 
-# Set up OpenAI API credentials
-with open('api_key.txt', 'r') as f:
-    openai.api_key = f.read()
+def summarize_text(text_to_summarize):
+    client = nlpcloud.Client("bart-large-cnn", "f771bc4e9647a3607f917eae5b5f609f7b320219", gpu=False, lang="en")
+    response = client.summarization(text_to_summarize, size="small")
+    summary_text = response['summary_text']
+    return summary_text
 
+def translate_text(text_to_translate, target_lang):
 
-# Define function to summarize text using OpenAI API
-def summarize_text(text):
-    # Use OpenAI API to summarize the text
+    client = nlpcloud.Client("t5-small", "f771bc4e9647a3607f917eae5b5f609f7b320219", gpu=False, lang="en")
+    response = client.translation(text_to_translate, target_lang)
+    translated_text = response['translated_text']
+    return translated_text
 
-    print("Summarizing text...")
-
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=f"Summarize the following text to 100 words:\n{text}\n---\nSummary:",
-        temperature=0.5,
-        max_tokens=100,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
-
-    # Return the summarized text
-    return response.choices[0].text.strip()
-
-if __name__ == "__main__":
-
-    #welcome message big "scraper"
-    print('''
-  
- __          __  _        _____                                      
- \ \        / / | |      / ____|                                     
-  \ \  /\  / /__| |__   | (___   ___ _ __ __ _ _ __  _ __   ___ _ __ 
-   \ \/  \/ / _ \ '_ \   \___ \ / __| '__/ _` | '_ \| '_ \ / _ \ '__|
-    \  /\  /  __/ |_) |  ____) | (__| | | (_| | |_) | |_) |  __/ |   
-     \/  \/ \___|_.__/  |_____/ \___|_|  \__,_| .__/| .__/ \___|_|   
-                                              | |   | |              
-                                              |_|   |_|              
-
-        ''')
-    parser = argparse.ArgumentParser(description='Text summarizer')
-    parser.add_argument('input_file', help='The input file name')
-    parser.add_argument('-o', '--output', default='summary.txt', help='The output file name')
-    args = parser.parse_args()
-
-    # Read the text from the input file
-    print("Reading text from file...")
-    with open(args.input_file, 'r') as f:
-        text = f.read()
-
-    # Summarize the text using the OpenAI API
-    summary = summarize_text(text)
-
-    # Write the summary to the output file
-    if args.output:
-        with open(args.output, 'w') as f:
-            f.write(summary)
-    else:
-        # Print the summary
-        print(summary)
-
-    print("Done!")
