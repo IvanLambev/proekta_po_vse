@@ -45,38 +45,47 @@ def has_ethernet_access():
     return False
 
 
-def scrape_and_output_to_file(url_count, url, file_path, file_name):
-    url_count = int(url_count)  # convert to int
-    print(url_count)
-    default_file_path = os.path.join(os.getcwd() , "output_files")
-    print(default_file_path)
+def scrape_and_output_to_file(url, file_path, file_name):
+    print(url)
+    default_file_path = os.path.join(os.getcwd(), "output_files")
+
     default_file_name = "file_"
 
     if file_path == "":
         file_path = default_file_path
+    elif not os.path.exists(file_path):
+        os.mkdir(file_path)
     else:
         pass
 
     if file_name == "":
         file_name = default_file_name
     else:
+
         pass
 
-    for i in range(url_count):
-        if is_valid_url(url[i]):
-            text = get_text(url[i])
-            scraped_file_name = file_name + str(i) + ".txt"
-            file_pathname = os.path.join(file_path, scraped_file_name)
-            print(file_pathname+"\n")
-            #
-            with open(file_pathname, "w") as f:
-                f.write(str(text.encode("utf-8")))
-            print("File saved to: " + file_pathname)
-            print("")
-        else:
-            print("Invalid URL")
-            print("Skipping...")
-            pass
+    if is_valid_url(url):
+        text = get_text(url)
+        scraped_file_name = file_name + str(i) + ".txt"
+        file_pathname = os.path.join(file_path, scraped_file_name)
+        if os.path.isfile(file_pathname):
+            print("File already exists")
+            will_overwrite = input("Overwrite? (y/n): ")
+            will_overwrite = will_overwrite.lower()
+            if will_overwrite == "y":
+                pass
+            else:
+                print("Skipping...")
+                return
+
+        with open(file_pathname, "w") as f:
+            f.write(str(text.encode("utf-8")))
+        print("File " + str(i) + " saved to: " + file_pathname)
+        print("")
+    else:
+        print("Invalid URL")
+        print("Skipping...")
+        pass
 
 
 def summarize(path_to_file, summary_file_name, summary_file_path):
@@ -84,7 +93,7 @@ def summarize(path_to_file, summary_file_name, summary_file_path):
         with open(path_to_file, "r") as f:
             text_to_summarize = f.read()
             summarized_text = summary.summarize_text(text_to_summarize)
-            default_file_path = "./output_files"
+            default_file_path = os.path.join(os.getcwd(), "output_files")
             default_file_name = "file_summarized"
 
             if summary_file_path == "":
@@ -142,20 +151,25 @@ if __name__ == "__main__":
     if mode == "1":
 
         url_count = int(input("Enter number of urls to scrape: "))
-        url = []
-        for i in range(url_count):
-            url_input = input("Enter url: ")
-            url.append(url_input)
-        print(url[i])
-        file_path = input("Enter file path: ")
-        file_name = input("Enter file name: ")
 
-        scrape_and_output_to_file(url_count, url, file_path, file_name)
+        for i in range(url_count):
+            url = input("Enter url " + str(i + 1) + ": ")
+
+            file_path = input("Enter file path: ")
+            file_name = input("Enter file name: ")
+
+            scrape_and_output_to_file(url, file_path, file_name)
 
     elif mode == "2":
 
         url_count = int(input("Enter number of urls to scrape: "))
-        url = input("Enter url: ")
-        file_path = input("Enter file path: ")
-        file_name = input("Enter file name: ")
-        scrape_and_output_to_file(url_count, url, file_path, file_name)
+        url = []
+        for i in range(url_count):
+            url_input = input("Enter url " + str(i + 1) + ": ")
+            url.append(url_input)
+
+            file_path = input("Enter file path: ")
+            file_name = input("Enter file name: ")
+
+            scrape_and_output_to_file(url, file_path, file_name)
+            summarize(file_path, file_name, file_path)
