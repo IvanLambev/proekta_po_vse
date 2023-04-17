@@ -5,6 +5,9 @@ import os
 
 import summary
 
+default_file_path = os.path.join(os.getcwd(), "output_files")
+
+
 
 def get_text(url):
     # Make request to the website
@@ -47,24 +50,9 @@ def has_ethernet_access():
 
 def scrape_and_output_to_file(url, file_path, file_name):
     print(url)
-    default_file_path = os.path.join(os.getcwd(), "output_files")
-
-    default_file_name = "file_"
-
-    if file_path == "":
-        file_path = default_file_path
-    elif not os.path.exists(file_path):
-        os.mkdir(file_path)
-    else:
-        pass
-
-    if file_name == "":
-        file_name = default_file_name
-    else:
-
-        pass
 
     if is_valid_url(url):
+        print("Valid URL")
         text = get_text(url)
         scraped_file_name = file_name + str(i) + ".txt"
         file_pathname = os.path.join(file_path, scraped_file_name)
@@ -77,23 +65,29 @@ def scrape_and_output_to_file(url, file_path, file_name):
             else:
                 print("Skipping...")
                 return
+        else:
+            pass
 
+        
         with open(file_pathname, "w") as f:
             f.write(str(text.encode("utf-8")))
+            f.close()
         print("File " + str(i) + " saved to: " + file_pathname)
         print("")
     else:
         print("Invalid URL")
         print("Skipping...")
-        pass
+        return "Invalid URL"
 
 
 def summarize(path_to_file, summary_file_name, summary_file_path):
     if is_valid_path(path_to_file):
+        os.chmod(path_to_file, 0o777)
+        os.chmod(file_path, 0o777)   # set permissions of the output_files folder
+           # set permissions of the file to be written
         with open(path_to_file, "r") as f:
             text_to_summarize = f.read()
             summarized_text = summary.summarize_text(text_to_summarize)
-            default_file_path = os.path.join(os.getcwd(), "output_files")
             default_file_name = "file_summarized"
 
             if summary_file_path == "":
@@ -107,11 +101,12 @@ def summarize(path_to_file, summary_file_name, summary_file_path):
                 pass
 
             file_name = summary_file_name + ".txt"
-            file_pathname = os.path.join(summary_file_path, summary_file_name)
-
+            file_pathname = os.path.join(summary_file_path, file_name)
+            
             with open(file_pathname, "w") as f:
 
                 f.write(str(summarized_text.encode("utf-8")))
+                f.close()
     else:
         return "Invalid path to file"
 
@@ -120,6 +115,7 @@ if __name__ == "__main__":
 
     if not os.path.exists("output_files"):
         os.mkdir("output_files")
+        os.chmod("output_files", 0o777)
 
     # welcome message "scraper"
     print('''
@@ -138,7 +134,7 @@ if __name__ == "__main__":
     print('Starting web scraper...')
     print("Welcome to the web scraper")
 
-    if has_ethernet_access() == False:
+    if not has_ethernet_access():
         print("No ethernet connection")
         print("Exiting...")
         exit()
@@ -154,22 +150,57 @@ if __name__ == "__main__":
 
         for i in range(url_count):
             url = input("Enter url " + str(i + 1) + ": ")
-
+            print(is_valid_url(url))
             file_path = input("Enter file path: ")
             file_name = input("Enter file name: ")
 
+
+
+            default_file_name = "file_"
+
+            if file_path == "":
+                file_path = default_file_path
+            elif not os.path.exists(file_path):
+                os.mkdir(file_path)
+            else:
+                pass
+
+            if file_name == "":
+                file_name = default_file_name
+            else:
+
+                pass
+
+            print("Starting...")
             scrape_and_output_to_file(url, file_path, file_name)
+            print("Done")
 
     elif mode == "2":
 
         url_count = int(input("Enter number of urls to scrape: "))
-        url = []
+        default_file_name = "file_summarized"
         for i in range(url_count):
-            url_input = input("Enter url " + str(i + 1) + ": ")
-            url.append(url_input)
-
+            url = input("Enter url " + str(i + 1) + ": ")
+            print(is_valid_url(url))
             file_path = input("Enter file path: ")
             file_name = input("Enter file name: ")
 
+            if file_path == "":
+                file_path = default_file_path
+            elif not os.path.exists(file_path):
+                os.mkdir(file_path)
+            else:
+                pass
+
+            if file_name == "":
+                file_name = default_file_name
+            else:
+
+                pass
+
+            print("Starting...")
             scrape_and_output_to_file(url, file_path, file_name)
+            print("Done")
+
             summarize(file_path, file_name, file_path)
+            print("Done")
