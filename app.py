@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from datetime import timedelta
+import datetime
 
 import psycopg2
 from flask import *
@@ -8,6 +9,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import URL, DataRequired
+
 
 import scraper
 from login_blueprint import login_bp
@@ -64,12 +66,14 @@ def index():
 
             if scraped_text and 'user' in session:
                 user = session['user']
+                current_date = datetime.date.today()
+                formatted_date = current_date.strftime("%Y-%m-%d")
                 print("Adding scraped url to database...")
                 try:
                     # get the user id
                     cur.execute("SELECT id FROM users WHERE username = %s", (user,))
                     user_id = cur.fetchone()[0]
-                    cur.execute("INSERT INTO scraped_urls (url, user_id) VALUES (%s, %s)", (url, user_id,))
+                    cur.execute("INSERT INTO scraped_urls (url, user_id, date_searched) VALUES (%s, %s, %s)", (url, user_id, formatted_date))
                     conn.commit()
                     print("Scraped url added to database")
                 except Exception as e:
@@ -118,11 +122,14 @@ def user(username):
 
         # make a list of the urls but make them cleaner
         cleaned_urls = [url[0].strip('()') for url in scraped_urls]
-        urls = '<br>'.join(cleaned_urls)
+        time_scraped = [url[1] for url in scraped_urls]
+
+        urls = [f"{url} ==>{date}" for url, date in zip(cleaned_urls, time_scraped)]
         print(urls)
+
         # make a list of the urls but make them cleaner
 
-        return render_template('dashboard.html', username=username, scraped_urls=cleaned_urls)
+        return render_template('dashboard.html', username=username, scraped_urls=urls)
     else:
         flash('You are not logged in', 'danger')
         return redirect(url_for('login'))
@@ -137,7 +144,7 @@ def logout():
 
 def get_scraped_urls(username):
     query = """
-        SELECT url
+        SELECT url, date_searched
         FROM scraped_urls
         WHERE user_id = (
             SELECT id
@@ -148,6 +155,7 @@ def get_scraped_urls(username):
     try:
         cur.execute(query, (username,))
         urls = cur.fetchall()
+        print(urls)
     except Exception as e:
         print(e)
         urls = []
