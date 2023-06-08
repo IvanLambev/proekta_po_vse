@@ -1,5 +1,3 @@
-.gitignore
-.idea
-.apikey
-api_key.txt
-translate_API.txt
+/test
+*.pem
+config.ini

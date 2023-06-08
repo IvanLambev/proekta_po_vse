@@ -1,0 +1,22 @@
+<!doctype html>
+
+<head>{% block title %}{% endblock %}</head>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <script>
+      var messages = {{ messages | safe }};
+      for (var i=0; i<messages.length; i++) {
+        alert(messages[i]);
+      }
+    </script>
+  {% endif %}
+{% endwith %}
+<html lang="en">
+
+
+
+
+<body id="main-body">{% block body %}{% endblock %}</body>
+
+</html>
