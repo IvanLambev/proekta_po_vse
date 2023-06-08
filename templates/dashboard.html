@@ -1,32 +1,36 @@
 {% extends "layout.html" %}
 
-{% block title %}<title>{{ username }}'s Dashboard</title>{% endblock %}
-<link rel="stylesheet" href="../static/css/style_for_dashboard.css" >
+{% block title %}
+    <title>{{ username }}'s Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style_for_dashboard.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+{% endblock %}
+
 {% block body %}
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <script>
-          var messages = {{ messages | safe }};
-          for (var i=0; i<messages.length; i++) {
-            alert(messages[i]);
-          }
-        </script>
-      {% endif %}
-    {% endwith %}
 
     <h1>Welcome {{ username }}</h1>
-    <h2>Those are the urls you have had scraped</h2>
-     {% for link in scraped_urls %}
-        <a href="{{ link }}">{{ link }}</a>
+    <div class="history-page">
+        <h1 class="history-page__title">URL History</h1>
+        <hr />
+        <div class="history-page__urls">
+            {% for link in scraped_urls %}
+                <a href="{{ link }}" class="url">{{ link }}</a>
+                <br>
+            {% endfor %}
+        </div>
         <br>
-    {% endfor %}
-    <br>
-    <h2>Scrape a new url</h2>
-    <a href="{{ url_for('scrape_url') }}">Scrape</a>
-    <br>
-
-
-
-    <a href="/logout">Logout</a>
+        <div class="redirect_buttons">
+            <a class="buttons" href="/">Scrape more URLs</a>
+            <br>
+            <a class="buttons" href="/logout">Logout</a>
+        </div>
+    </div>
+    <script src="https://code.iconify.design/1/1.0.3/iconify.min.js"></script>
 
 {% endblock %}

@@ -23,10 +23,15 @@ def get_text(url):
 
 # validation
 def is_valid_url(url):
+    if not url.startswith('http://') and not url.startswith('https://'):
+        # URL doesn't start with http:// or https://
+        return False
+
     try:
-        response = requests.head(url)
+        response = requests.get(url)
         return response.status_code == 200
-    except:
+    except requests.exceptions.RequestException:
+        # An exception occurred during the request
         return False
 
 

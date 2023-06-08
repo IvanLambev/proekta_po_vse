@@ -1,0 +1,88 @@
+/* style_for_dashboard.css */
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  background-color: #B9F3FC;
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  margin-top: 30px;
+}
+
+.history-page {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.history-page__title {
+  font-size: large;
+  margin-top: 0;
+}
+
+hr {
+  color: #b4b3b3;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.search {
+  display: none;
+}
+
+.search__input-box {
+  display: none;
+}
+
+.history-page__urls {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.url {
+  margin-bottom: 10px;
+  color: #0A4D68;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.url:hover {
+  color: #088395;
+}
+
+.buttons {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: #fff;
+  background-color: #0A4D68;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.buttons:hover {
+  background-color: #088395;
+}
+
+.redirect_buttons {
+  text-align: center;
+  margin-top: 20px;
+}

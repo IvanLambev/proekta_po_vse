@@ -1,29 +1,48 @@
 {% extends "layout.html" %}
 
-{% block title %}<title> Scrape URL</title>{% endblock %}
+{% block title %}<title>Scrape URL</title>{% endblock %}
 
 {% block body %}
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="/static/css/style_for_scrape_urls.css">
 
     <h1>Scrape URL</h1>
+
     {% if error %}
-        <p>{{ error }}</p>
+        <div class="error"><p>{{ error }}</p></div>
     {% endif %}
+
     {% if scraped_text %}
-        <p>{{ scraped_text }}</p>
-        <button onclick="window.location.href='/summarize'">Text to long to read? Summarize it here</button>
+        <div class="scraped-text">
+            <p>{{ scraped_text }}</p>
+            <button class="summarize-btn" onclick="window.location.href='/summarize'">Text too long to read? Summarize it here</button>
+            <button class="download-btn" onclick="downloadText()">Download as TXT</button>
+        </div>
     {% endif %}
-    <form action="/scrapeUrl" method="POST">
+
+    <form action="/" method="POST">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-        <label for="url">URL:</label>
-        <input type="text" id="url" name="url" required>
-        <button type="submit">Scrape</button>
+        <div class="form-group">
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Scrape</button>
     </form>
+
     <script>
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const csrfInput = document.querySelector('input[name="_csrf_token"]');
 
         csrfInput.value = csrfToken;
-    </script>
 
+        function downloadText() {
+            const text = document.querySelector('.scraped-text p').innerText;
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', 'scraped_text.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
 {% endblock %}
