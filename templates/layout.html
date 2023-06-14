@@ -1,22 +1,53 @@
-<!doctype html>
-
-<head>{% block title %}{% endblock %}</head>
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <script>
-      var messages = {{ messages | safe }};
-      for (var i=0; i<messages.length; i++) {
-        alert(messages[i]);
-      }
-    </script>
-  {% endif %}
-{% endwith %}
+<!DOCTYPE html>
 <html lang="en">
 
+<head>
+  {% block title %}{% endblock %}
+  <style>
+    .navbar {
+      background-color: #f2f2f2;
+      overflow: hidden;
+        padding: 10px 10px;
+    }
 
+    .navbar a {
+      float: left;
+      display: block;
+      color: black;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
 
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+  </style>
+</head>
 
-<body id="main-body">{% block body %}{% endblock %}</body>
+<body id="main-body">
+  <div class="navbar">
+    <a href="{{ url_for('index') }}">Home page</a>
+    <a href="{{ url_for('login.login') }}">Log in</a>
+    <a href="{{ url_for('register.register') }}">Register</a>
+    <a href="{{ url_for('login.login') }}">Dashboard</a>
+
+  </div>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <script>
+        var messages = {{ messages | safe }};
+        for (var i=0; i<messages.length; i++) {
+          alert(messages[i]);
+        }
+      </script>
+    {% endif %}
+  {% endwith %}
+
+  {% block body %}{% endblock %}
+</body>
 
 </html>

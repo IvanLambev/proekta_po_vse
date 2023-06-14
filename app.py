@@ -10,7 +10,6 @@ from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import URL, DataRequired
 
-
 import scraper
 from login_blueprint import login_bp
 from register_blueprint import register_bp
@@ -33,8 +32,6 @@ conn = psycopg2.connect(
 )
 
 cur = conn.cursor()
-
-
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -73,7 +70,8 @@ def index():
                     # get the user id
                     cur.execute("SELECT id FROM users WHERE username = %s", (user,))
                     user_id = cur.fetchone()[0]
-                    cur.execute("INSERT INTO scraped_urls (url, user_id, date_searched) VALUES (%s, %s, %s)", (url, user_id, formatted_date))
+                    cur.execute("INSERT INTO scraped_urls (url, user_id, date_searched) VALUES (%s, %s, %s)",
+                                (url, user_id, formatted_date))
                     conn.commit()
                     print("Scraped url added to database")
                 except Exception as e:
@@ -96,9 +94,15 @@ class ScrapeForm(FlaskForm):
     submit = SubmitField('Scrape')
 
 
-@app.route('/summarize', methods=['GET', 'POST'])
-def summarize_text():
-    url_to_scrape = session.get('scraped_urls')
+@app.route('/summarize', methods=['GET'])
+def summarize_url():
+    url_to_scrape = session.get('scraped_urls', None)
+    print(url_to_scrape)
+    if url_to_scrape == "" or url_to_scrape is None:
+        flash('Error: URL not found', 'danger')
+        print("Error: URL not found")
+        return redirect(url_for('index'))
+    print(url_to_scrape)
     scraped_text = scraper.get_text(url_to_scrape)
     try:
         if scraped_text:
@@ -124,7 +128,7 @@ def user(username):
         cleaned_urls = [url[0].strip('()') for url in scraped_urls]
         time_scraped = [url[1] for url in scraped_urls]
 
-        urls = [f"{url} ==>{date}" for url, date in zip(cleaned_urls, time_scraped)]
+        urls = [f'{url} {date}' for url, date in zip(cleaned_urls, time_scraped)]
         print(urls)
 
         # make a list of the urls but make them cleaner

@@ -19,8 +19,9 @@
         <h1 class="history-page__title">URL History</h1>
         <hr />
         <div class="history-page__urls">
-            {% for link in scraped_urls %}
-                <a href="{{ link }}" class="url">{{ link }}</a>
+            {% for link  in scraped_urls %}
+                {% set url = link.split(" ")[0] %}
+                <a href="{{ url }}" class="url">{{ url }}</a>
                 <br>
             {% endfor %}
         </div>

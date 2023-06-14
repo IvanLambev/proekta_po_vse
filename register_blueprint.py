@@ -4,8 +4,6 @@ import psycopg2
 from flask import Blueprint, render_template, request, session, flash, redirect, url_for
 from flask_bcrypt import Bcrypt
 
-
-
 register_bp = Blueprint('register', __name__)
 bcrypt = Bcrypt()
 

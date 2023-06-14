@@ -14,7 +14,7 @@
     {% if scraped_text %}
         <div class="scraped-text">
             <p>{{ scraped_text }}</p>
-            <button class="summarize-btn" onclick="window.location.href='/summarize'">Text too long to read? Summarize it here</button>
+            <button class="summarize-btn" onclick="window.location.href='{{ url_for('summarize_url') }}'">Text too long to read? Summarize it here</button>
             <button class="download-btn" onclick="downloadText()">Download as TXT</button>
         </div>
     {% endif %}
